@@ -44,11 +44,11 @@ public class WishListRepositoryTest {
         var wishListEntity = create();
         var expected = wishListRepository.save(wishListEntity);
 
-        expected.setTitle("update test");
+        expected.setTitle("update test"); //위(saveTest) 리턴된 1번에 대해 업데이트
         var saveEntity = wishListRepository.save(expected);
 
-        Assertions.assertEquals("update test", saveEntity.getTitle());
-        Assertions.assertEquals(1, wishListRepository.findAll().size());
+        Assertions.assertEquals("update test", saveEntity.getTitle()); // update test 가 떠야함
+        Assertions.assertEquals(1, wishListRepository.findAll().size()); //업데이트이기에 카운트가 늘어나면 안됨
 
     }
 
@@ -73,7 +73,7 @@ public class WishListRepositoryTest {
         wishListRepository.deleteById(1);
 
         int count = wishListRepository.findAll().size();
-        Assertions.assertEquals(0,count);
+        Assertions.assertEquals(0,count); //삭제된거면 0 값 이어야 성공
 
     }
 
@@ -87,7 +87,7 @@ public class WishListRepositoryTest {
         wishListRepository.save(wishListEntity2);
 
         int count = wishListRepository.findAll().size();
-        Assertions.assertEquals(2,count);
+        Assertions.assertEquals(2,count); //총 2개여야 성공
 
     }
 

@@ -16,11 +16,13 @@ public class ApiController {
 
     private final WishListService wishListService;
 
+    // 1. 검색 조회
     @GetMapping("/search")
     public WishListDto search(@RequestParam String query){
         return wishListService.search(query);
     }
 
+    // 2. 추가
     @PostMapping("")
     public WishListDto add(@RequestBody WishListDto wishListDto){
         log.info("{}",wishListDto);
@@ -28,16 +30,19 @@ public class ApiController {
         return wishListService.add(wishListDto);
     }
 
+    // 3. 전체 리스트 가져옴
     @GetMapping("/all")
     public List<WishListDto> findAll(){
         return wishListService.findAll();
     }
 
+    // 4. 삭제
     @DeleteMapping("/{index}")
     public void delete(@PathVariable int index){
         wishListService.delete(index);
     }
 
+    //5. 방문 추가
     @PostMapping("/{index}")
     public void addVisit(@PathVariable int index){
         wishListService.addVisit(index);

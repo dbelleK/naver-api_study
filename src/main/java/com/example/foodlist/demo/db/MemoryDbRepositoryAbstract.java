@@ -10,11 +10,13 @@ abstract public class MemoryDbRepositoryAbstract<T extends MemoryDbEntity> imple
     private final List<T> db = new ArrayList<>();
     private int index = 0;
 
+    //특정 리턴
     @Override
     public Optional<T> findById(int index) {
         return db.stream().filter(it->it.getIndex() == index).findFirst(); //MemoryDbEntity에서 상속받은 getIndex
     }
 
+    //저장
     @Override
     public T save(T entity) {
 
@@ -28,7 +30,7 @@ abstract public class MemoryDbRepositoryAbstract<T extends MemoryDbEntity> imple
             return entity;
 
         }else{
-            //db에 데이터가 없는 경우
+            //db에 데이터가 없는 경우 //데이터 업데이트
             var preIndex  = optionalEntity.get().getIndex(); //이전 인덱스 뽑음
             entity.setIndex(preIndex);
 
@@ -40,6 +42,7 @@ abstract public class MemoryDbRepositoryAbstract<T extends MemoryDbEntity> imple
 
     }
 
+    //삭제
     @Override
     public void deleteById(int index) {
 
@@ -51,6 +54,7 @@ abstract public class MemoryDbRepositoryAbstract<T extends MemoryDbEntity> imple
 
     }
 
+    //전체 리턴
     @Override
     public List<T> findAll() {
         return db;

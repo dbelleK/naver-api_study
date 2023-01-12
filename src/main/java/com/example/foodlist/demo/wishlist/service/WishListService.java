@@ -19,6 +19,7 @@ public class WishListService {
     private final NaverClient naverClient;
     private final WishListRepository wishListRepository;
 
+    // 1. 검색 조회
     public WishListDto search(String query) {
 
         //// 지역검색
@@ -32,7 +33,7 @@ public class WishListService {
             var localItem = searchLocalRes.getItems().stream().findFirst().get(); //첫번째 아이템 꺼냄
 
             //위 localItem 가지고 imageQuery만듬
-            var imageQuery = localItem.getTitle().replaceAll("<[^>]*>", "");
+            var imageQuery = localItem.getTitle().replaceAll("<[^>]*>", ""); //가로쳐져 있는거 지움 ex) 갈비집(한우) -> 갈비집
             //이미지 검색
             var searchImageReq = new SearchImageReq();
             searchImageReq.setQuery(imageQuery);
@@ -44,7 +45,7 @@ public class WishListService {
 
                 var imageItem = searchImageRes.getItems().stream().findFirst().get();
 
-                //결과를 리턴
+                ////결과를 리턴 //최종화면에 보이는 글
                 var result = new WishListDto();
                 result.setTitle(localItem.getTitle());
                 result.setCategory(localItem.getCategory());
@@ -59,10 +60,11 @@ public class WishListService {
 
         }
         return new WishListDto();
-
     }
 
+    // --------------------------------------------------
 
+    // 2. 추가
     public WishListDto add(WishListDto wishListDto) {
         var entity = dtoToEntity(wishListDto);
         var saveEntity = wishListRepository.save(entity);
@@ -70,6 +72,7 @@ public class WishListService {
     }
 
 
+    //dto를 가지고 entity를 만듬
     private WishListEntity dtoToEntity(WishListDto wishListDto) {
         var entity = new WishListEntity();
         entity.setIndex(wishListDto.getIndex());
@@ -85,6 +88,7 @@ public class WishListService {
         return entity;
     }
 
+    //entity를 가지고 dto로 바꿈
     private WishListDto entityToDto(WishListEntity wishListEntity) {
         var dto = new WishListDto();
         dto.setIndex(wishListEntity.getIndex());
@@ -100,6 +104,9 @@ public class WishListService {
         return dto;
     }
 
+    // --------------------------------------------------
+
+    // 3. 전체 리스트 가져옴
     public List<WishListDto> findAll() {
         return wishListRepository.findAll()
                 .stream()
@@ -107,14 +114,19 @@ public class WishListService {
                 .collect(Collectors.toList());
     }
 
+    // --------------------------------------------------
 
+    // 4. 삭제
     public void delete(int index) {
         wishListRepository.deleteById(index);
     }
 
+    // --------------------------------------------------
+
+    // 5. 방문 추가
     public void addVisit(int index){
         var wishItem = wishListRepository.findById(index);
-        if(wishItem.isPresent()){
+        if(wishItem.isPresent()){ //있으면 업데이트
             var item = wishItem.get();
             item.setVisit(true);
             item.setVisitCount(item.getVisitCount()+1);

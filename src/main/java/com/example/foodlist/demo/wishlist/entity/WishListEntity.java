@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 @Data
 public class WishListEntity extends MemoryDbEntity {
 
+    //db 저장된 데이터
+
     private String title;                   // 음식명, 장소명
     private String category;                // 카테고리
     private String address;                 // 주소

@@ -33,6 +33,7 @@ public class NaverClient {
     public SearchLocalRes searchLocal(SearchLocalReq searchLocalReq){
 
         ////req
+        //주소만들기
         var uri = UriComponentsBuilder.fromUriString(naverLocalSearchUrl)
                 .queryParams(searchLocalReq.toMultiValueMap()) //toMultiValueMap() 부름
                 .build()
@@ -45,6 +46,7 @@ public class NaverClient {
         headers.set("X-Naver-Client-Secret", naverClientSecret);
         headers.setContentType(MediaType.APPLICATION_JSON);
 
+        //요청
         var httpEntity = new HttpEntity<>(headers); //headers 담음
 
         ////res
